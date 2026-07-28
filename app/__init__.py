@@ -1,13 +1,22 @@
 """Flask application package."""
 
+from dotenv import load_dotenv
 from flask import Flask
 
 from app.blueprints.health import bp as health_bp
+from app.extensions import csrf, db, login_manager, migrate
 
 
-def create_app() -> Flask:
-    """Create the Flask application."""
+def create_app(config_object: str = "app.config.Config") -> Flask:
+    """Create and configure the Flask application."""
+    load_dotenv()
     app = Flask(__name__)
+    app.config.from_object(config_object)
+
+    db.init_app(app)
+    migrate.init_app(app, db)
+    login_manager.init_app(app)
+    csrf.init_app(app)
 
     @app.get("/")
     def hello() -> str:

@@ -2,3 +2,7 @@ pre-commit==4.6.1
 ruff==0.16.0
 Flask==3.1.1
 python-dotenv==1.1.1
+Flask-SQLAlchemy==3.1.1
+Flask-Migrate==4.1.0
+Flask-Login==0.6.3
+Flask-WTF==1.2.2
