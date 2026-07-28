@@ -17,12 +17,13 @@
   },
   "mounts": [
     "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
-    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached"
+    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.cursor,target=/home/vscode/.cursor,type=bind,consistency=cached"
   ],
   "remoteEnv": {
     "PATH": "/workspace/.venv/bin:${containerEnv:PATH}"
   },
-  "postCreateCommand": "python -m venv .venv && .venv/bin/pip install --upgrade pip && .venv/bin/pip install -r requirements-dev.txt",
+  "postCreateCommand": "/usr/local/bin/python -m venv --clear .venv && .venv/bin/pip install --upgrade pip && .venv/bin/pip install -r requirements-dev.txt",
   "customizations": {
     "vscode": {
       "extensions": [
