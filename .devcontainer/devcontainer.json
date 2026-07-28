@@ -23,6 +23,13 @@
   "remoteEnv": {
     "PATH": "/workspace/.venv/bin:${containerEnv:PATH}"
   },
+  "forwardPorts": [5000],
+  "portsAttributes": {
+    "5000": {
+      "label": "Flask",
+      "onAutoForward": "notify"
+    }
+  },
   "postCreateCommand": "/usr/local/bin/python -m venv --clear .venv && .venv/bin/pip install --upgrade pip && .venv/bin/pip install -r requirements-dev.txt",
   "customizations": {
     "vscode": {

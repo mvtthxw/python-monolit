@@ -3,6 +3,7 @@
 from dotenv import load_dotenv
 from flask import Flask
 
+from app import models as _models  # noqa: F401  # register models with metadata
 from app.blueprints.health import bp as health_bp
 from app.extensions import csrf, db, login_manager, migrate
 
