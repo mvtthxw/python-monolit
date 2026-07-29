@@ -35,6 +35,14 @@ curl -s http://localhost:5000/ready
 
 Expected response: `{"status":"ok"}` (HTTP 503 if the database is unreachable).
 
+List rooms:
+
+```bash
+curl -s http://localhost:5000/api/rooms
+```
+
+Returns a JSON array (empty until rooms are seeded).
+
 ## Database migrations
 
 Schema changes are managed with **Flask-Migrate** (Alembic). Models in `app/models.py` are the source of truth; migration scripts under `migrations/versions/` are generated from them and applied to the database.

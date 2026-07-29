@@ -5,6 +5,7 @@ from flask import Flask
 
 from app import models as _models  # noqa: F401  # register models with metadata
 from app.blueprints.health import bp as health_bp
+from app.blueprints.rooms import bp as rooms_bp
 from app.extensions import csrf, db, login_manager, migrate
 
 
@@ -24,4 +25,5 @@ def create_app(config_object: str = "app.config.Config") -> Flask:
         return "Hello, World!"
 
     app.register_blueprint(health_bp)
+    app.register_blueprint(rooms_bp)
     return app
