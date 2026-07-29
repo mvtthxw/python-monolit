@@ -12,6 +12,7 @@ Flask monolith — room reservation system (work in progress).
 python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements-dev.txt
+cp .env.example .env
 flask --app wsgi db upgrade
 flask --app wsgi run --debug --host 0.0.0.0 --port 5000
 ```
@@ -25,6 +26,14 @@ curl -s http://localhost:5000/health
 ```
 
 Expected response: `{"status":"ok"}`.
+
+Readiness (database):
+
+```bash
+curl -s http://localhost:5000/ready
+```
+
+Expected response: `{"status":"ok"}` (HTTP 503 if the database is unreachable).
 
 ## Database migrations
 
@@ -45,4 +54,16 @@ flask --app wsgi db upgrade
 
 `db migrate` autogenerates a revision by comparing models to the current database — always review the generated file before upgrading.
 
-Default local database is SQLite (`instance/app.db`, gitignored). Override with `DATABASE_URL` if needed.
+## Database (SQLite)
+
+Local development uses **SQLite** by default — no Docker or external database server required.
+
+- Config: `DATABASE_URL=sqlite:///app.db` in [`.env.example`](.env.example)
+- File on disk: `instance/app.db` (gitignored)
+- Apply schema: `flask --app wsgi db upgrade`
+
+Postgres via Docker can be added later; for now SQLite is enough.
+
+## Configuration
+
+Copy [`.env.example`](.env.example) to `.env` and edit values as needed. `.env` is gitignored; never commit real secrets.
