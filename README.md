@@ -43,6 +43,17 @@ curl -s http://localhost:5000/api/rooms
 
 Returns a JSON array (empty until rooms are seeded).
 
+List / create reservations:
+
+```bash
+curl -s http://localhost:5000/api/reservations
+curl -s -X POST http://localhost:5000/api/reservations \
+  -H 'Content-Type: application/json' \
+  -d '{"room_id":1,"guest_name":"Ada","guest_email":"ada@example.com","starts_at":"2026-08-01T10:00:00+00:00","ends_at":"2026-08-01T11:00:00+00:00"}'
+```
+
+Overlapping confirmed bookings for the same room return HTTP 409.
+
 ## Database migrations
 
 Schema changes are managed with **Flask-Migrate** (Alembic). Models in `app/models.py` are the source of truth; migration scripts under `migrations/versions/` are generated from them and applied to the database.
