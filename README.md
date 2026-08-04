@@ -18,7 +18,7 @@ flask --app wsgi seed
 flask --app wsgi run --debug --host 0.0.0.0 --port 5000
 ```
 
-App: [http://localhost:5000](http://localhost:5000)
+App: [http://localhost:5000](http://localhost:5000) — HTML shell with nav (Home / Book).
 
 Health check:
 

@@ -5,6 +5,7 @@ from flask import Flask
 
 from app import models as _models  # noqa: F401  # register models with metadata
 from app.blueprints.health import bp as health_bp
+from app.blueprints.main import bp as main_bp
 from app.blueprints.reservations import bp as reservations_bp
 from app.blueprints.rooms import bp as rooms_bp
 from app.cli import register_cli
@@ -23,10 +24,7 @@ def create_app(config_object: type | str = "app.config.Config") -> Flask:
     csrf.init_app(app)
     register_cli(app)
 
-    @app.get("/")
-    def hello() -> str:
-        return "Hello, World!"
-
+    app.register_blueprint(main_bp)
     app.register_blueprint(health_bp)
     app.register_blueprint(rooms_bp)
     app.register_blueprint(reservations_bp)
