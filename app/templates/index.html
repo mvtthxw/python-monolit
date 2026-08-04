@@ -5,6 +5,44 @@
 {% block content %}
   <section class="page-intro">
     <h1>Room reservations</h1>
-    <p>Public booking UI is under construction. API endpoints already work.</p>
+    <p>Browse available rooms and upcoming confirmed bookings. Use <a href="{{ url_for('main.book') }}">Book</a> to reserve a slot (form next step).</p>
+  </section>
+
+  <section class="panel">
+    <h2>Rooms</h2>
+    {% if rooms %}
+      <ul class="item-list">
+        {% for room in rooms %}
+          <li>
+            <strong>{{ room.name }}</strong>
+            <span class="meta">capacity {{ room.capacity }}</span>
+            {% if room.description %}
+              <p class="desc">{{ room.description }}</p>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty">No active rooms yet. Run <code>flask --app wsgi seed</code>.</p>
+    {% endif %}
+  </section>
+
+  <section class="panel">
+    <h2>Confirmed reservations</h2>
+    {% if reservations %}
+      <ul class="item-list">
+        {% for reservation in reservations %}
+          <li>
+            <strong>{{ reservation.room.name }}</strong>
+            <span class="meta">
+              {{ reservation.starts_at }} → {{ reservation.ends_at }}
+            </span>
+            <p class="desc">{{ reservation.guest_name }} ({{ reservation.guest_email }})</p>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty">No confirmed reservations yet.</p>
+    {% endif %}
   </section>
 {% endblock %}
