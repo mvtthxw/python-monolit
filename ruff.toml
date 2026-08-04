@@ -12,3 +12,9 @@ ignore = [
     "COM812",  # conflicts with formatter
     "ISC001",  # conflicts with formatter
 ]
+
+[lint.per-file-ignores]
+"tests/**" = [
+    "S101",    # assert is fine in tests
+    "PLR2004", # magic values in assertions
+]

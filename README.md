@@ -55,6 +55,14 @@ curl -s -X POST http://localhost:5000/api/reservations \
 
 Overlapping confirmed bookings for the same room return HTTP 409.
 
+## Tests
+
+```bash
+pytest
+```
+
+Uses an in-memory SQLite database (`TestConfig`) — does not touch `instance/app.db`.
+
 ## Database migrations
 
 Schema changes are managed with **Flask-Migrate** (Alembic). Models in `app/models.py` are the source of truth; migration scripts under `migrations/versions/` are generated from them and applied to the database.

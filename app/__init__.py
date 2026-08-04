@@ -11,7 +11,7 @@ from app.cli import register_cli
 from app.extensions import csrf, db, login_manager, migrate
 
 
-def create_app(config_object: str = "app.config.Config") -> Flask:
+def create_app(config_object: type | str = "app.config.Config") -> Flask:
     """Create and configure the Flask application."""
     load_dotenv()
     app = Flask(__name__)

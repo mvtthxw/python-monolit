@@ -13,3 +13,12 @@ repos:
       - id: ruff
         args: [--fix]
       - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: .local-venv/bin/pytest
+        language: system
+        pass_filenames: false
+        files: ^(app/|tests/|wsgi\.py|requirements)
