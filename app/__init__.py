@@ -7,6 +7,7 @@ from app import models as _models  # noqa: F401  # register models with metadata
 from app.blueprints.health import bp as health_bp
 from app.blueprints.reservations import bp as reservations_bp
 from app.blueprints.rooms import bp as rooms_bp
+from app.cli import register_cli
 from app.extensions import csrf, db, login_manager, migrate
 
 
@@ -20,6 +21,7 @@ def create_app(config_object: str = "app.config.Config") -> Flask:
     migrate.init_app(app, db)
     login_manager.init_app(app)
     csrf.init_app(app)
+    register_cli(app)
 
     @app.get("/")
     def hello() -> str:

@@ -14,6 +14,7 @@ source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements-dev.txt
 cp .env.example .env
 flask --app wsgi db upgrade
+flask --app wsgi seed
 flask --app wsgi run --debug --host 0.0.0.0 --port 5000
 ```
 
@@ -86,3 +87,5 @@ Postgres via Docker can be added later; for now SQLite is enough.
 ## Configuration
 
 Copy [`.env.example`](.env.example) to `.env` and edit values as needed. `.env` is gitignored; never commit real secrets.
+
+`flask --app wsgi seed` creates an admin user (`ADMIN_USERNAME` / `ADMIN_PASSWORD`) and three sample rooms. Safe to re-run (skips existing rows).
