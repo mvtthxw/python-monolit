@@ -5,6 +5,48 @@
 {% block content %}
   <section class="page-intro">
     <h1>Book a room</h1>
-    <p>The booking form will land in the next step.</p>
+    <p>Pick a room and time window. Confirmed bookings show up on the home page.</p>
+  </section>
+
+  <section class="panel">
+    {% if form.room_id.choices %}
+      <form method="post" class="stack-form" novalidate>
+        {{ form.hidden_tag() }}
+
+        <label>
+          {{ form.room_id.label }}
+          {{ form.room_id }}
+          {% for error in form.room_id.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+        </label>
+
+        <label>
+          {{ form.guest_name.label }}
+          {{ form.guest_name(placeholder="Ada Lovelace") }}
+          {% for error in form.guest_name.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+        </label>
+
+        <label>
+          {{ form.guest_email.label }}
+          {{ form.guest_email(placeholder="ada@example.com") }}
+          {% for error in form.guest_email.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+        </label>
+
+        <label>
+          {{ form.starts_at.label }}
+          {{ form.starts_at }}
+          {% for error in form.starts_at.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+        </label>
+
+        <label>
+          {{ form.ends_at.label }}
+          {{ form.ends_at }}
+          {% for error in form.ends_at.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+        </label>
+
+        {{ form.submit(class_="button") }}
+      </form>
+    {% else %}
+      <p class="empty">No active rooms to book. Run <code>flask --app wsgi seed</code> first.</p>
+    {% endif %}
   </section>
 {% endblock %}
