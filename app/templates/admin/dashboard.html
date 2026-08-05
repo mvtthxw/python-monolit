@@ -45,7 +45,20 @@
               {{ reservation.status }}
               · {{ reservation.starts_at }} → {{ reservation.ends_at }}
             </span>
-            <p class="desc">{{ reservation.guest_name }} ({{ reservation.guest_email }})</p>
+            <p class="desc">
+              {{ reservation.guest_name }} ({{ reservation.guest_email }})
+              {% if reservation.status == 'confirmed' %}
+                <form
+                  class="inline-form"
+                  method="post"
+                  action="{{ url_for('admin.reservation_cancel', reservation_id=reservation.id) }}"
+                  onsubmit="return confirm('Cancel this reservation?');"
+                >
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button type="submit" class="linkish">Cancel</button>
+                </form>
+              {% endif %}
+            </p>
           </li>
         {% endfor %}
       </ul>

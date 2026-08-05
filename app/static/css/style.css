@@ -232,6 +232,26 @@ a:hover {
   width: auto;
 }
 
+.inline-form {
+  display: inline;
+  margin-left: 0.5rem;
+}
+
+.linkish {
+  font: inherit;
+  font-weight: 600;
+  color: #991b1b;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.linkish:hover {
+  color: #7f1d1d;
+}
+
 .field-error {
   color: #991b1b;
   font-weight: 500;

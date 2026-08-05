@@ -7,6 +7,7 @@ from app.decorators import admin_required
 from app.extensions import db
 from app.forms import RoomForm
 from app.models import Reservation, Room
+from app.services import ReservationNotFoundError, cancel_reservation
 
 bp = Blueprint("admin", __name__, url_prefix="/admin")
 
@@ -75,3 +76,19 @@ def room_edit(room_id: int) -> str | Response:
         form=form,
         title=f"Edit {room.name}",
     )
+
+
+@bp.post("/reservations/<int:reservation_id>/cancel")
+@admin_required
+def reservation_cancel(reservation_id: int) -> Response:
+    """Cancel a confirmed reservation via the domain service."""
+    try:
+        reservation = cancel_reservation(reservation_id)
+    except ReservationNotFoundError:
+        abort(404)
+
+    flash(
+        f"Reservation #{reservation.id} for {reservation.room.name} cancelled.",
+        "success",
+    )
+    return redirect(url_for("admin.dashboard"))
