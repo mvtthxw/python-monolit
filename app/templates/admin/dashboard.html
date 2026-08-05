@@ -5,7 +5,10 @@
 {% block content %}
   <section class="page-intro">
     <h1>Admin</h1>
-    <p>Signed in as <strong>{{ current_user.username }}</strong>. Room CRUD and cancellation land in the next steps.</p>
+    <p>
+      Signed in as <strong>{{ current_user.username }}</strong>.
+      <a href="{{ url_for('admin.room_create') }}">Add room</a>
+    </p>
   </section>
 
   <section class="panel">
@@ -18,6 +21,7 @@
             <span class="meta">
               capacity {{ room.capacity }}
               · {% if room.is_active %}active{% else %}inactive{% endif %}
+              · <a href="{{ url_for('admin.room_edit', room_id=room.id) }}">Edit</a>
             </span>
             {% if room.description %}
               <p class="desc">{{ room.description }}</p>
@@ -26,7 +30,7 @@
         {% endfor %}
       </ul>
     {% else %}
-      <p class="empty">No rooms in the database.</p>
+      <p class="empty">No rooms yet. <a href="{{ url_for('admin.room_create') }}">Create one</a>.</p>
     {% endif %}
   </section>
 

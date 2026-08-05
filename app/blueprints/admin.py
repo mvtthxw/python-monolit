@@ -1,8 +1,11 @@
 """Admin panel routes."""
 
-from flask import Blueprint, render_template
+from flask import Blueprint, Response, abort, flash, redirect, render_template, url_for
+from sqlalchemy.exc import IntegrityError
 
 from app.decorators import admin_required
+from app.extensions import db
+from app.forms import RoomForm
 from app.models import Reservation, Room
 
 bp = Blueprint("admin", __name__, url_prefix="/admin")
@@ -18,4 +21,57 @@ def dashboard() -> str:
         "admin/dashboard.html",
         rooms=rooms,
         reservations=reservations,
+    )
+
+
+@bp.route("/rooms/new", methods=["GET", "POST"])
+@admin_required
+def room_create() -> str | Response:
+    """Create a new room."""
+    form = RoomForm()
+    if form.validate_on_submit():
+        room = Room(
+            name=form.name.data or "",
+            capacity=form.capacity.data or 1,
+            description=form.description.data or None,
+            is_active=bool(form.is_active.data),
+        )
+        db.session.add(room)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            flash("A room with that name already exists.", "error")
+        else:
+            flash(f"Room {room.name!r} created.", "success")
+            return redirect(url_for("admin.dashboard"))
+    return render_template("admin/room_form.html", form=form, title="New room")
+
+
+@bp.route("/rooms/<int:room_id>/edit", methods=["GET", "POST"])
+@admin_required
+def room_edit(room_id: int) -> str | Response:
+    """Edit an existing room."""
+    room = db.session.get(Room, room_id)
+    if room is None:
+        abort(404)
+
+    form = RoomForm(obj=room)
+    if form.validate_on_submit():
+        room.name = form.name.data or room.name
+        room.capacity = form.capacity.data or room.capacity
+        room.description = form.description.data or None
+        room.is_active = bool(form.is_active.data)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            flash("A room with that name already exists.", "error")
+        else:
+            flash(f"Room {room.name!r} updated.", "success")
+            return redirect(url_for("admin.dashboard"))
+    return render_template(
+        "admin/room_form.html",
+        form=form,
+        title=f"Edit {room.name}",
     )

@@ -211,13 +211,25 @@ a:hover {
 }
 
 .stack-form input,
-.stack-form select {
+.stack-form select,
+.stack-form textarea {
   font: inherit;
   padding: 0.55rem 0.7rem;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fff;
   color: var(--ink);
+}
+
+.checkbox-row {
+  display: flex !important;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.checkbox-row input {
+  width: auto;
 }
 
 .field-error {

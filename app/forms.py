@@ -1,8 +1,17 @@
 """WTForms used by public HTML pages."""
 
 from flask_wtf import FlaskForm
-from wtforms import DateTimeLocalField, PasswordField, SelectField, StringField, SubmitField
-from wtforms.validators import DataRequired, Email, Length
+from wtforms import (
+    BooleanField,
+    DateTimeLocalField,
+    IntegerField,
+    PasswordField,
+    SelectField,
+    StringField,
+    SubmitField,
+    TextAreaField,
+)
+from wtforms.validators import DataRequired, Email, Length, NumberRange, Optional
 
 
 class BookingForm(FlaskForm):
@@ -36,3 +45,16 @@ class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired(), Length(max=80)])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Log in")
+
+
+class RoomForm(FlaskForm):
+    """Create or edit a meeting room."""
+
+    name = StringField("Name", validators=[DataRequired(), Length(max=120)])
+    capacity = IntegerField(
+        "Capacity",
+        validators=[DataRequired(), NumberRange(min=1, max=1000)],
+    )
+    description = TextAreaField("Description", validators=[Optional(), Length(max=2000)])
+    is_active = BooleanField("Active", default=True)
+    submit = SubmitField("Save room")
