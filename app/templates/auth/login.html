@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Log in — Room reservations{% endblock %}
+
+{% block content %}
+  <section class="page-intro">
+    <h1>Admin login</h1>
+    <p>Sign in with the seeded admin account from your <code>.env</code>.</p>
+  </section>
+
+  <section class="panel">
+    <form method="post" class="stack-form" novalidate>
+      {{ form.hidden_tag() }}
+
+      <label>
+        {{ form.username.label }}
+        {{ form.username(autocomplete="username") }}
+        {% for error in form.username.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+      </label>
+
+      <label>
+        {{ form.password.label }}
+        {{ form.password(autocomplete="current-password") }}
+        {% for error in form.password.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+      </label>
+
+      {{ form.submit(class_="button") }}
+    </form>
+  </section>
+{% endblock %}

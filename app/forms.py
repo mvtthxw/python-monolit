@@ -1,7 +1,7 @@
 """WTForms used by public HTML pages."""
 
 from flask_wtf import FlaskForm
-from wtforms import DateTimeLocalField, SelectField, StringField, SubmitField
+from wtforms import DateTimeLocalField, PasswordField, SelectField, StringField, SubmitField
 from wtforms.validators import DataRequired, Email, Length
 
 
@@ -28,3 +28,11 @@ class BookingForm(FlaskForm):
         validators=[DataRequired()],
     )
     submit = SubmitField("Book room")
+
+
+class LoginForm(FlaskForm):
+    """Admin login form."""
+
+    username = StringField("Username", validators=[DataRequired(), Length(max=80)])
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField("Log in")

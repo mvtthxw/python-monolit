@@ -18,7 +18,7 @@ flask --app wsgi seed
 flask --app wsgi run --debug --host 0.0.0.0 --port 5000
 ```
 
-App: [http://localhost:5000](http://localhost:5000) — home lists rooms/reservations; [Book](http://localhost:5000/book) uses a WTForms + CSRF form.
+App: [http://localhost:5000](http://localhost:5000) — home lists rooms/reservations; [Book](http://localhost:5000/book) uses a WTForms + CSRF form; [Log in](http://localhost:5000/login) protects `/admin` (seeded `ADMIN_USERNAME` / `ADMIN_PASSWORD`).
 
 Health check:
 
