@@ -5,6 +5,48 @@
 {% block content %}
   <section class="page-intro">
     <h1>Admin</h1>
-    <p>You are signed in as <strong>{{ current_user.username }}</strong>. Dashboard lists land in the next step.</p>
+    <p>Signed in as <strong>{{ current_user.username }}</strong>. Room CRUD and cancellation land in the next steps.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Rooms</h2>
+    {% if rooms %}
+      <ul class="item-list">
+        {% for room in rooms %}
+          <li>
+            <strong>{{ room.name }}</strong>
+            <span class="meta">
+              capacity {{ room.capacity }}
+              · {% if room.is_active %}active{% else %}inactive{% endif %}
+            </span>
+            {% if room.description %}
+              <p class="desc">{{ room.description }}</p>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty">No rooms in the database.</p>
+    {% endif %}
+  </section>
+
+  <section class="panel">
+    <h2>Reservations</h2>
+    {% if reservations %}
+      <ul class="item-list">
+        {% for reservation in reservations %}
+          <li>
+            <strong>{{ reservation.room.name }}</strong>
+            <span class="meta">
+              {{ reservation.status }}
+              · {{ reservation.starts_at }} → {{ reservation.ends_at }}
+            </span>
+            <p class="desc">{{ reservation.guest_name }} ({{ reservation.guest_email }})</p>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="empty">No reservations yet.</p>
+    {% endif %}
   </section>
 {% endblock %}
