@@ -55,6 +55,29 @@ curl -s -X POST http://localhost:5000/api/reservations \
 
 Overlapping confirmed bookings for the same room return HTTP 409.
 
+## Docker (local smoke test)
+
+Build Docker image
+
+```bash
+docker build -t python-monolit:local .
+```
+
+Flags (`-e`, `-p`, `-v`) must come **before** the image name.
+
+```bash
+docker build -t python-monolit:local .
+docker run --rm \
+  -e SECRET_KEY=dev-only-change-me \
+  -e DATABASE_URL=sqlite:////data/app.db \
+  -p 8000:8000 \
+  -v monolit-data:/data \
+  python-monolit:local
+```
+
+Then: [http://localhost:8000](http://localhost:8000) and `curl -s http://localhost:8000/health`.
+`/ready` may fail until migrations run inside the container (entrypoint comes later). Runtime deps: [`requirements-prod.txt`](requirements-prod.txt).
+
 ## Tests
 
 ```bash
