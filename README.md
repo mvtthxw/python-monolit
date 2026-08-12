@@ -57,13 +57,7 @@ Overlapping confirmed bookings for the same room return HTTP 409.
 
 ## Docker (local smoke test)
 
-Build Docker image
-
-```bash
-docker build -t python-monolit:local .
-```
-
-Flags (`-e`, `-p`, `-v`) must come **before** the image name.
+Single container + SQLite volume (no Compose):
 
 ```bash
 docker build -t python-monolit:local .
@@ -75,8 +69,18 @@ docker run --rm \
   python-monolit:local
 ```
 
-Then: [http://localhost:8000](http://localhost:8000) and `curl -s http://localhost:8000/health`.
-`/ready` may fail until migrations run inside the container (entrypoint comes later). Runtime deps: [`requirements-prod.txt`](requirements-prod.txt).
+Flags (`-e`, `-p`, `-v`) must come **before** the image name. App: [http://localhost:8000](http://localhost:8000).
+Without migrations applied, `/ready` may fail on a bare `docker run` unless you use Compose (below).
+
+### Docker Compose (Postgres)
+
+```bash
+docker compose up --build
+```
+
+Starts `web` (gunicorn + migrate/seed on start) and `db` (Postgres 16). App: [http://localhost:8000](http://localhost:8000).
+
+Default DB URL inside Compose: `postgresql+psycopg://monolit:monolit@db:5432/monolit`. Override via env / `.env` (`SECRET_KEY`, `ADMIN_*`, `SEED_ON_START=0` to skip seed). Runtime deps: [`requirements-prod.txt`](requirements-prod.txt).
 
 ## Tests
 
@@ -113,7 +117,7 @@ Local development uses **SQLite** by default — no Docker or external database 
 - File on disk: `instance/app.db` (gitignored)
 - Apply schema: `flask --app wsgi db upgrade`
 
-Postgres via Docker can be added later; for now SQLite is enough.
+**Docker Compose** uses **Postgres** (`postgresql+psycopg://...` — see [`docker-compose.yml`](docker-compose.yml)). Driver: `psycopg` in [`requirements-prod.txt`](requirements-prod.txt).
 
 ## Configuration
 
