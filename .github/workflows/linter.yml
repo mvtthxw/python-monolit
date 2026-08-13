@@ -1,0 +1,17 @@
+name: Linter
+
+on:
+  workflow_dispatch:
+  # pull_request:
+  #   branches:
+  #     - main
+
+permissions:
+  contents: read
+
+jobs:
+  python-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
