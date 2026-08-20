@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   python-lint:
+    name: Python Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -39,6 +40,7 @@ jobs:
         run: ruff format --check .
 
   dockerfile-lint:
+    name: Dockerfile Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
