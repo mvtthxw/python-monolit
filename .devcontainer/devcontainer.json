@@ -8,14 +8,22 @@
   "remoteUser": "vscode",
   "shutdownAction": "stopContainer",
   "runArgs": [
+    "--env-file=${localEnv:HOME}/Documents/.env",
     "--add-host=host.docker.internal:host-gateway",
     "--privileged"
   ],
   "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.13"
+    },
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/aws-cli:1": {},
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "version": "latest"
+      "version": "latest",
+      "moby": true
+    },
+    "ghcr.io/devcontainers/features/terraform:1": {
+      "version": "1.15.9"
     }
   },
   "mounts": [
@@ -33,7 +41,7 @@
       "onAutoForward": "notify"
     }
   },
-  "postCreateCommand": "/usr/local/bin/python -m venv --clear .venv && .venv/bin/pip install --upgrade pip && .venv/bin/pip install -r requirements-dev.txt",
+  "postCreateCommand": "bash -c '/usr/local/bin/python -m venv --clear .venv && .venv/bin/pip install --upgrade pip && .venv/bin/pip install -r requirements-dev.txt'",
   "customizations": {
     "vscode": {
       "extensions": [
