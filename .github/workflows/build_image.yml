@@ -3,7 +3,6 @@ name: Build Docker Image
 on:
   workflow_dispatch:
 
-
 permissions:
   contents: read
 
@@ -14,3 +13,41 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # 7.0.1
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # 5.1.1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Mask AWS account id
+        run: echo "::add-mask::${{ secrets.AWS_ACCOUNT_ID }}"
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076 # 2.0.1
+
+      # - name: Set image SHA tag
+      #   id: meta
+      #   run: echo "sha=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+      # - name: Build image
+      #   env:
+      #     REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      #     REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+      #     IMAGE_TAG: ${{ steps.meta.outputs.sha }}
+      #   run: |
+      #     docker build \
+      #       -t "${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}" \
+      #       -t "${REGISTRY}/${REPOSITORY}:latest" \
+      #       .
+
+      # - name: Push image
+      #   env:
+      #     REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+      #     REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+      #     IMAGE_TAG: ${{ steps.meta.outputs.sha }}
+      #   run: |
+      #     docker push "${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}"
+      #     docker push "${REGISTRY}/${REPOSITORY}:latest"

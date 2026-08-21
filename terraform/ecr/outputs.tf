@@ -17,3 +17,13 @@ output "registry_id" {
   description = "AWS account ID hosting the ECR registry"
   value       = aws_ecr_repository.ecr.registry_id
 }
+
+output "ecr_push_user_name" {
+  description = "IAM user for CI ECR push/pull (create access keys manually)"
+  value       = aws_iam_user.ecr_push.name
+}
+
+output "ecr_push_user_arn" {
+  description = "IAM user ARN for CI ECR push/pull"
+  value       = aws_iam_user.ecr_push.arn
+}
