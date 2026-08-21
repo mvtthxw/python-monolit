@@ -7,9 +7,9 @@ terraform {
     }
   }
   backend "s3" {
-    bucket  = "mvtthxw-tf-state"
-    key     = "state/python-monolit-ecr.tfstate"
-    region  = "us-east-1"
+    bucket       = "mvtthxw-tf-state"
+    key          = "state/python-monolit-ecr.tfstate"
+    region       = "us-east-1"
     encrypt      = true
     use_lockfile = true
   }
