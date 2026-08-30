@@ -102,5 +102,9 @@ jobs:
       - name: TFLint init
         run: tflint --init
 
-      - name: TFLint
-        run: tflint
+      - name: Terraform format check
+        run: terraform fmt --check -recursive -diff .
+
+      - name: Lint Terraform ECR
+        working-directory: terraform/ecr
+        run: tflint --recursive --format compact
