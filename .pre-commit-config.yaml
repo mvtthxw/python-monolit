@@ -12,6 +12,20 @@ repos:
     hooks:
       - id: gitleaks
 
+  - repo: https://github.com/semgrep/pre-commit
+    rev: v1.175.0
+    hooks:
+      - id: semgrep
+        types: [python]
+        args:
+          - --config=p/python
+          - --config=p/flask
+          - --config=p/owasp-top-ten
+          - --error
+          - --disable-version-check
+          - --quiet
+          - --skip-unknown-extensions
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.16.0
     hooks:
