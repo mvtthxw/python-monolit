@@ -6,12 +6,14 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
   secret-scan:
     name: Secret Scan
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # 7.0.1
@@ -28,3 +30,40 @@ jobs:
           GITLEAKS_ENABLE_COMMENTS: false
           GITLEAKS_ENABLE_UPLOAD_ARTIFACT: true
           GITLEAKS_ENABLE_SUMMARY: true
+
+  sast:
+    name: SAST (Semgrep)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # 7.0.1
+
+      - name: Load versions
+        run: cat .versions >> "$GITHUB_ENV"
+
+      - name: Run Semgrep
+        id: semgrep
+        continue-on-error: true
+        run: |
+          docker run --rm \
+            -v "$PWD:/src" \
+            -w /src \
+            "semgrep/semgrep:${SEMGREP_VERSION}" \
+            semgrep scan \
+              --config p/python \
+              --config p/flask \
+              --config p/owasp-top-ten \
+              --sarif \
+              --output /src/semgrep.sarif
+
+      - name: Upload SARIF
+        if: always() && hashFiles('semgrep.sarif') != ''
+        continue-on-error: true
+        uses: github/codeql-action/upload-sarif@cdf488f595d80d6e07e03d4674febd5ab45fa938 # 4.37.9
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep
