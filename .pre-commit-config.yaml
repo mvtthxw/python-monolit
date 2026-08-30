@@ -22,3 +22,12 @@ repos:
         language: system
         pass_filenames: false
         files: ^(app/|tests/|wsgi\.py|requirements)
+
+  - repo: local
+    hooks:
+      - id: tflint
+        name: tflint
+        entry: bash -c 'cd terraform && tflint --init && tflint --recursive'
+        language: system
+        pass_filenames: false
+        files: ^terraform/
