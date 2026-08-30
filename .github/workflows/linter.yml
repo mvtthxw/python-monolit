@@ -103,6 +103,7 @@ jobs:
         run: tflint --init
 
       - name: Terraform format check
+        working-directory: terraform/
         run: terraform fmt --check -recursive -diff .
 
       - name: Lint Terraform ECR
