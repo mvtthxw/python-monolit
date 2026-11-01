@@ -75,10 +75,18 @@ Without migrations applied, `/ready` may fail on a bare `docker run` unless you 
 ### Docker Compose (Postgres)
 
 ```bash
-docker compose up --build
+docker-compose up --build -d
 ```
 
 Starts `web` (gunicorn + migrate/seed on start) and `db` (Postgres 16). App: [http://localhost:8000](http://localhost:8000).
+
+Rebuild the `web` image from scratch and recreate containers:
+
+```bash
+docker-compose down
+docker-compose build --no-cache web
+docker-compose up -d --force-recreate
+```
 
 Default DB URL inside Compose: `postgresql+psycopg://monolit:monolit@db:5432/monolit`. Override via env / `.env` (`SECRET_KEY`, `ADMIN_*`, `SEED_ON_START=0` to skip seed). Runtime deps: [`requirements-prod.txt`](requirements-prod.txt).
 
