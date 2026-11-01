@@ -19,5 +19,5 @@ tests
 ruff.toml
 *.md
 .cursor
-.terraform
+**/.terraform
 *.tfstate*
